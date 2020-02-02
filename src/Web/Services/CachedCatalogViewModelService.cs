@@ -21,6 +21,17 @@ namespace Microsoft.eShopWeb.Web.Services
             _catalogViewModelService = catalogViewModelService;
         }
 
+        /// <inheritdoc />
+        public async Task<CatalogItemViewModel> Create(string name, string description, string pictureUri, decimal price, int catalogBrandId, int catalogTypeId, bool showPrice = true, CancellationToken cancellationToken = default)
+        {
+            var catalogItemViewModel = await _catalogViewModelService.Create(name, description, pictureUri, price, catalogBrandId, catalogTypeId, showPrice, cancellationToken);
+            var cacheKey = CacheHelpers.GenerateCatalogItemIdKey(catalogItemViewModel.Id);
+            _cache.Set(cacheKey, catalogItemViewModel, new MemoryCacheEntryOptions {
+                SlidingExpiration = CacheHelpers.DefaultCacheDuration
+            });
+            return catalogItemViewModel;
+        }
+
         public async Task<IEnumerable<SelectListItem>> GetBrands(CancellationToken cancellationToken = default(CancellationToken))
         {
             return await _cache.GetOrCreateAsync(CacheHelpers.GenerateBrandsCacheKey(), async entry =>

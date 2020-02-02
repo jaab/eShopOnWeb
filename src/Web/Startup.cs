@@ -35,6 +35,10 @@ using Newtonsoft.Json;
 
 using Web.Extensions;
 using Web.Extensions.Middleware;
+using Microsoft.eShopWeb.Web.Swagger;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.eShopWeb.Web.Authorization;
 
 [assembly : ApiConventionType(typeof(DefaultApiConventions))]
 namespace Microsoft.eShopWeb.Web {
@@ -64,8 +68,7 @@ namespace Microsoft.eShopWeb.Web {
 
             // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseInMemoryDatabase("Identity"));
-
+                options.UseSqlite(Configuration.GetConnectionString("IdentityConnection")));
             ConfigureServices(services);
         }
 
@@ -163,7 +166,13 @@ namespace Microsoft.eShopWeb.Web {
 
             services.AddHttpContextAccessor();
 
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApi.Models.OpenApiInfo { Title = "My API", Version = "v1" }));
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new OpenApi.Models.OpenApiInfo { Title = "My API", Version = "v1" });
+                // Define the OAuth2.0 scheme that's in use (i.e. Implicit Flow)
+                c.AddSecurityDefinition(SwaggerConstants.IDENTITY_SERVER_SECURITY_SCHEME.Name, SwaggerConstants.IDENTITY_SERVER_SECURITY_SCHEME);
+
+                c.OperationFilter<AssignOAuth2SecurityRequirements>();
+            });
 
             services.AddHealthChecks();
 
@@ -172,6 +181,19 @@ namespace Microsoft.eShopWeb.Web {
 
                 config.Path = "/allservices";
             });
+
+            services.AddAuthentication()
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "http://localhost:7000";
+                    options.RequireHttpsMetadata = !_webHostEnvironment.IsDevelopment();
+
+                    options.Audience = "eshoponweb";
+                });
+
+            services.AddAuthorization();
+            services.AddSingleton<IAuthorizationPolicyProvider, AuthorizationPolicyProvider>();
+            services.AddSingleton<IAuthorizationHandler, HasScopeAuthorizationHandler>();
 
             _services = services; // used to debug registered services
         }
@@ -219,6 +241,14 @@ namespace Microsoft.eShopWeb.Web {
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+
+                c.OAuthClientId("eshoponweb-swagger");
+                c.OAuthClientSecret("6a1b4db6-3b95-462b-a24b-eb061ae6bad3");
+                c.OAuthAppName("EShopOnWeb Swagger");
+                c.OAuthScopeSeparator(" ");
+                c.OAuthAdditionalQueryStringParams(new Dictionary<string, string> {
+                    { "nonce", "TODO_GENERATE_SECURE_RANDOM_NONCE" }}); 
+                // c.OAuthUseBasicAuthenticationWithAccessCodeGrant();
             });
 
             app.UseEndpoints(endpoints => {

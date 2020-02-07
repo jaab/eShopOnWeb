@@ -147,7 +147,7 @@ namespace Microsoft.eShopWeb.Web {
             //services.AddIdentity<ApplicationUser, IdentityRole>()
             //.AddEntityFrameworkStores<AppIdentityDbContext>();
             // If you want to tweak Identity cookies, they're no longer part of IdentityOptions.
-            services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/LogIn");
+            services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
             services.AddAuthentication()
             .AddFacebook(options =>
             {

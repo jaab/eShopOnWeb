@@ -1,5 +1,6 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Exceptions;
 using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Entities.WishAggregate;
 
 namespace Ardalis.GuardClauses
 {
@@ -9,6 +10,15 @@ namespace Ardalis.GuardClauses
         {
             if (basket == null)
                 throw new BasketNotFoundException(basketId);
+        }
+    }
+
+     public static class WishGuards
+    {
+        public static void NullWish(this IGuardClause guardClause, int wishId, Wish wish)
+        {
+            if (wish == null)
+                throw new WishNotFoundException(wishId);
         }
     }
 }

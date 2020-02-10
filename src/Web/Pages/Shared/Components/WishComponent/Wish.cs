@@ -11,20 +11,20 @@ namespace Microsoft.eShopWeb.Web.Pages.Shared.Components.WishComponent
 {
     public class Wish : ViewComponent
     {
-        private readonly IWishViewModelService _wishService;
+        private readonly IWishViewModelService _basketService;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public Wish(IWishViewModelService wishService,
+        public Wish(IWishViewModelService basketService,
                         SignInManager<ApplicationUser> signInManager)
         {
-            _wishService = wishService;
+            _basketService = basketService;
             _signInManager = signInManager;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string userName)
+        public IViewComponentResult Invoke(string userName)
         {
             var vm = new WishComponentViewModel();
-            vm.ItemsCount = (await GetWishViewModelAsync()).Items.Sum(i => i.Quantity);
+            // vm.ItemsCount = (await GetWishViewModelAsync()).Items.Sum(i => i.Quantity);
             return View(vm);
         }
 
@@ -32,18 +32,18 @@ namespace Microsoft.eShopWeb.Web.Pages.Shared.Components.WishComponent
         {
             if (_signInManager.IsSignedIn(HttpContext.User))
             {
-                return await _wishService.GetOrCreateWishForUser(User.Identity.Name);
+                return await _basketService.GetOrCreateWishForUser(User.Identity.Name);
             }
             string anonymousId = GetWishIdFromCookie();
             if (anonymousId == null) return new WishViewModel();
-            return await _wishService.GetOrCreateWishForUser(anonymousId);
+            return await _basketService.GetOrCreateWishForUser(anonymousId);
         }
 
         private string GetWishIdFromCookie()
         {
-            if (Request.Cookies.ContainsKey(Constants.Wish_COOKIENAME))
+            if (Request.Cookies.ContainsKey(Constants.WISH_COOKIENAME))
             {
-                return Request.Cookies[Constants.Wish_COOKIENAME];
+                return Request.Cookies[Constants.WISH_COOKIENAME];
             }
             return null;
         }

@@ -10,25 +10,24 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.WishAggregate
         private readonly List<WishItem> _items = new List<WishItem>();
         public IReadOnlyCollection<WishItem> Items => _items.AsReadOnly();
 
-        public void AddItem(int catalogItemId, decimal unitPrice, int quantity = 1)
+        public void AddItem(int catalogItemId, decimal unitPrice)
         {
             if (!Items.Any(i => i.CatalogItemId == catalogItemId))
             {
                 _items.Add(new WishItem()
                 {
                     CatalogItemId = catalogItemId,
-                    Quantity = quantity,
                     UnitPrice = unitPrice
                 });
                 return;
             }
             var existingItem = Items.FirstOrDefault(i => i.CatalogItemId == catalogItemId);
-            existingItem.Quantity += quantity;
+           
         }
 
         public void RemoveEmptyItems()
         {
-            _items.RemoveAll(i => i.Quantity == 0);
+           // _items.RemoveAll(i => i.Quantity == 0);
         }
     }
 }

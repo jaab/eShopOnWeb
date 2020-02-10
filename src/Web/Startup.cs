@@ -35,6 +35,7 @@ using Newtonsoft.Json;
 
 using Web.Extensions;
 using Web.Extensions.Middleware;
+using Microsoft.Extensions.Logging;
 
 [assembly : ApiConventionType(typeof(DefaultApiConventions))]
 namespace Microsoft.eShopWeb.Web {
@@ -130,6 +131,7 @@ namespace Microsoft.eShopWeb.Web {
             CreateIdentityIfNotCreated(services);
 
             services.AddMediatR(typeof(BasketViewModelService).Assembly);
+            services.AddMediatR(typeof(WishViewModelService).Assembly);
 
             if (_webHostEnvironment.IsDevelopment()) {
                 services.AddSingleton<ICurrencyService, CurrencyServiceStatic>();
@@ -141,6 +143,19 @@ namespace Microsoft.eShopWeb.Web {
             services.AddCatalogServices(Configuration);
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             services.AddTransient<IEmailSender, EmailSender>();
+
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+            //.AddEntityFrameworkStores<AppIdentityDbContext>();
+            // If you want to tweak Identity cookies, they're no longer part of IdentityOptions.
+            services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
+            services.AddAuthentication()
+            .AddFacebook(options =>
+            {
+                options.AppId = "183476352866825";
+                options.AppSecret = "471535fb6e0542b83029d5b24ae3b3c5";
+            });
+
+           
 
             // Add memory cache services
             services.AddMemoryCache();

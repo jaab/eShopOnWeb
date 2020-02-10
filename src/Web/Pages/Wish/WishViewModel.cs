@@ -12,7 +12,7 @@ namespace Microsoft.eShopWeb.Web.Pages.Wish
 
         public decimal Total()
         {
-            return Math.Round(Items.Sum(x => x.UnitPrice * x.Quantity), 2);
+            return Math.Round(Items.Sum(x => x.UnitPrice), 2);
         }
     }
 }

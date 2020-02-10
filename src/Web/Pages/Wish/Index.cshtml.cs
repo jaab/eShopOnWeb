@@ -14,23 +14,18 @@ namespace Microsoft.eShopWeb.Web.Pages.Wish
 {
     public class IndexModel : PageModel
     {
-
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string PictureUri { get; set; }
-        public decimal Price { get; set; }
-        private readonly IWishService _wishService;
+        private readonly IWishService _basketService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private string _username = null;
-        private readonly IWishViewModelService _wishViewModelService;
+        private readonly IWishViewModelService _basketViewModelService;
 
-        public IndexModel(IWishService wishService,
-            IWishViewModelService wishViewModelService,
+        public IndexModel(IWishService basketService,
+            IWishViewModelService basketViewModelService,
             SignInManager<ApplicationUser> signInManager)
         {
-            _wishService = wishService;
+            _basketService = basketService;
             _signInManager = signInManager;
-            _wishViewModelService = wishViewModelService;
+            _basketViewModelService = basketViewModelService;
         }
 
         public WishViewModel WishModel { get; set; } = new WishViewModel();
@@ -48,7 +43,7 @@ namespace Microsoft.eShopWeb.Web.Pages.Wish
             }
             await SetWishModelAsync();
 
-            await _wishService.AddItemToWish(WishModel.Id, productDetails.Id, productDetails.Price);
+            await _basketService.AddItemToWish(WishModel.Id, productDetails.Id, productDetails.Price);
 
             await SetWishModelAsync();
 
@@ -58,7 +53,7 @@ namespace Microsoft.eShopWeb.Web.Pages.Wish
         public async Task OnPostUpdate(Dictionary<string, int> items)
         {
             await SetWishModelAsync();
-            await _wishService.SetQuantities(WishModel.Id, items);
+           // await _basketService.SetQuantities(BasketModel.Id, items);
 
             await SetWishModelAsync();
         }
@@ -67,27 +62,27 @@ namespace Microsoft.eShopWeb.Web.Pages.Wish
         {
             if (_signInManager.IsSignedIn(HttpContext.User))
             {
-                WishModel = await _wishViewModelService.GetOrCreateWishForUser(User.Identity.Name);
+                WishModel = await _basketViewModelService.GetOrCreateWishForUser(User.Identity.Name);
             }
             else
             {
                 GetOrSetWishCookieAndUserName();
-                WishModel = await _wishViewModelService.GetOrCreateWishForUser(_username);
+                WishModel = await _basketViewModelService.GetOrCreateWishForUser(_username);
             }
         }
 
         private void GetOrSetWishCookieAndUserName()
         {
-            if (Request.Cookies.ContainsKey(Constants.Wish_COOKIENAME))
+            if (Request.Cookies.ContainsKey(Constants.WISH_COOKIENAME))
             {
-                _username = Request.Cookies[Constants.Wish_COOKIENAME];
+                _username = Request.Cookies[Constants.WISH_COOKIENAME];
             }
             if (_username != null) return;
 
             _username = Guid.NewGuid().ToString();
             var cookieOptions = new CookieOptions { IsEssential = true };
             cookieOptions.Expires = DateTime.Today.AddYears(10);
-            Response.Cookies.Append(Constants.Wish_COOKIENAME, _username, cookieOptions);
+            Response.Cookies.Append(Constants.WISH_COOKIENAME, _username, cookieOptions);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Ardalis.GuardClauses
         }
     }
 
-    public static class WishGuards
+     public static class WishGuards
     {
         public static void NullWish(this IGuardClause guardClause, int wishId, Wish wish)
         {

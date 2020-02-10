@@ -19,7 +19,7 @@
                 <section class="esh-basket-title col-xs-3">Product</section>
                 <section class="esh-basket-title col-xs-3 hidden-lg-down"></section>
                 <section class="esh-basket-title col-xs-2">Price</section>
-                <section class="esh-basket-title col-xs-2"></section>
+               <section class="esh-basket-title col-xs-2"></section>
                 <section class="esh-basket-title col-xs-2"></section>
             </article>
             <div class="esh-catalog-items row">
@@ -66,25 +66,31 @@
                 <div class="container">
                     <article class="esh-basket-titles esh-basket-titles--clean row">
                         <section class="esh-basket-title col-xs-10"></section>
+                        <section class="esh-basket-title col-xs-2"></section>
                     </article>
 
                     <article class="esh-basket-items row">
                         <section class="esh-basket-item col-xs-10"></section>
+                        <section class="esh-basket-item esh-basket-item--mark col-xs-2"></section>
                     </article>
-
                     <article class="esh-basket-items row">
                         <section class="esh-basket-item col-xs-7"></section>
-                       
+                        <section class="esh-basket-item col-xs-2">
+                            @*<button class="btn esh-basket-checkout" name="name" value="" type="submit">[ Update ]</button>*@
+                        </section>
                     </article>
                 </div>
                 <div class="row">
-                    <section class="esh-basket-item col-xs-1">
-                        <a asp-page="/Index" class="btn esh-basket-checkout text-white">[ Continue Shopping..]</a>
-                    </section>
                     <section class="esh-basket-item col-xs-push-7 col-xs-4">
-
-                     
-                       
+                @*
+                        <button class="btn esh-basket-checkout" name="updatebutton" value="" type="submit"
+                                asp-page-handler="Update">
+                            [ Update ]
+                        </button>
+                        <input type="submit" asp-page="Checkout"
+                               class="btn esh-basket-checkout"
+                               value="[ Checkout ]" name="action" />
+                     *@
                     </section>
                 </div>
             </div>

@@ -2,7 +2,6 @@
 
 namespace Microsoft.eShopWeb.ApplicationCore.Exceptions
 {
-
     public class WishNotFoundException : Exception
     {
         public WishNotFoundException(int wishId) : base($"No wish found with id {wishId}")

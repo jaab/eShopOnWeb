@@ -10,52 +10,58 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
 {
     public class WishService : IWishService
     {
-        private readonly IAsyncRepository<Wish> _wishRepository;
+        private readonly IAsyncRepository<Wish> _basketRepository;
         private readonly IAppLogger<WishService> _logger;
 
-        public WishService(IAsyncRepository<Wish> wishRepository,
+        public WishService(IAsyncRepository<Wish> basketRepository,
             IAppLogger<WishService> logger)
         {
-            _wishRepository = wishRepository;
+            _basketRepository = basketRepository;
             _logger = logger;
         }
 
-        public async Task AddItemToWish(int wishId, int catalogItemId, decimal price, int quantity = 1)
+        public async Task AddItemToWish(int basketId, int catalogItemId, decimal price)
         {
-            var wish = await _wishRepository.GetByIdAsync(wishId);
+            var basket = await _basketRepository.GetByIdAsync(basketId);
 
-            wish.AddItem(catalogItemId, price, quantity);
+            basket.AddItem(catalogItemId, price);
 
-            await _wishRepository.UpdateAsync(wish);
+            await _basketRepository.UpdateAsync(basket);
         }
 
-        public async Task DeleteWishAsync(int wishId)
+        public Task DeleteWishAsync(int wishId)
         {
-            var wish = await _wishRepository.GetByIdAsync(wishId);
-            await _wishRepository.DeleteAsync(wish);
+            throw new System.NotImplementedException();
+        }
+
+        public async Task DeleteWishtAsync(int wishId)
+        {
+            var wish = await _basketRepository.GetByIdAsync(wishId);
+            await _basketRepository.DeleteAsync(wish);
         }
 
         public async Task<int> GetWishItemCountAsync(string userName)
         {
             Guard.Against.NullOrEmpty(userName, nameof(userName));
-            var wishSpec = new WishWithItemsSpecification(userName);
-            var wish = (await _wishRepository.ListAsync(wishSpec)).FirstOrDefault();
-            if (wish == null)
+            var basketSpec = new WishWithItemsSpecification(userName);
+            var basket = (await _basketRepository.ListAsync(basketSpec)).FirstOrDefault();
+            if (basket == null)
             {
                 _logger.LogInformation($"No wish found for {userName}");
                 return 0;
             }
-            int count = wish.Items.Sum(i => i.Quantity);
+           // int count = basket.Items.Sum(i => i.Quantity);
+           int count = 0;
             _logger.LogInformation($"Wish for {userName} has {count} items.");
             return count;
         }
 
-        public async Task SetQuantities(int wishId, Dictionary<string, int> quantities)
+       /** public async Task SetQuantities(int basketId, Dictionary<string, int> quantities)
         {
             Guard.Against.Null(quantities, nameof(quantities));
-            var wish = await _wishRepository.GetByIdAsync(wishId);
-            Guard.Against.NullWish(wishId, wish);
-            foreach (var item in wish.Items)
+            var basket = await _basketRepository.GetByIdAsync(basketId);
+            Guard.Against.NullBasket(basketId, basket);
+            foreach (var item in basket.Items)
             {
                 if (quantities.TryGetValue(item.Id.ToString(), out var quantity))
                 {
@@ -63,19 +69,24 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
                     item.Quantity = quantity;
                 }
             }
-            wish.RemoveEmptyItems();
-            await _wishRepository.UpdateAsync(wish);
-        }
+            basket.RemoveEmptyItems();
+            await _basketRepository.UpdateAsync(basket);
+        }**/
 
-        public async Task TransferWishAsync(string anonymousId, string userName)
+      /**  public async Task TransferBasketAsync(string anonymousId, string userName)
         {
             Guard.Against.NullOrEmpty(anonymousId, nameof(anonymousId));
             Guard.Against.NullOrEmpty(userName, nameof(userName));
-            var wishSpec = new WishWithItemsSpecification(anonymousId);
-            var wish = (await _wishRepository.ListAsync(wishSpec)).FirstOrDefault();
-            if (wish == null) return;
-            wish.BuyerId = userName;
-            await _wishRepository.UpdateAsync(wish);
+            var basketSpec = new BasketWithItemsSpecification(anonymousId);
+            var basket = (await _basketRepository.ListAsync(basketSpec)).FirstOrDefault();
+            if (basket == null) return;
+            basket.BuyerId = userName;
+            await _basketRepository.UpdateAsync(basket);
+        }**/
+
+        public Task TransferWishAsync(string anonymousId, string userName)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

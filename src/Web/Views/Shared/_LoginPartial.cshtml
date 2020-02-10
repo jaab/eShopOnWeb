@@ -20,6 +20,10 @@
                        asp-action="MyOrders">
                         <div class="esh-identity-name esh-identity-name--upper">My orders</div>
                     </a>
+                     <a class="esh-identity-item"
+                           asp-page="/Wish/Index">
+                            <div class="esh-identity-name esh-identity-name--upper">My Wishlist</div>
+                        </a>
                     <a class="esh-identity-item"
                        asp-page="/Wish/Index">
                         <div class="esh-identity-name esh-identity-name--upper">My wishlist</div>
@@ -39,7 +43,8 @@
     </section>
 
     <section class="col-lg-1 col-xs-12">
-        @await Component.InvokeAsync("Basket", User.Identity.Name)
+        <div> @await Component.InvokeAsync("Basket", User.Identity.Name)</div>
+        <div> @await Component.InvokeAsync("Wish", User.Identity.Name)</div> 
     </section>
 
 }
@@ -60,5 +65,6 @@ else
 
     <section class="col-lg-1 col-xs-12">
         @await Component.InvokeAsync("Basket")
+      @*@await Component.InvokeAsync("Wish")*@   
     </section>
 }

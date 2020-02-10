@@ -12,63 +12,62 @@ namespace Microsoft.eShopWeb.Web.Services
 {
     public class WishViewModelService : IWishViewModelService
     {
-        private readonly IAsyncRepository<Wish> _wishRepository;
+        private readonly IAsyncRepository<Wish> _basketRepository;
         private readonly IUriComposer _uriComposer;
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
 
-        public WishViewModelService(IAsyncRepository<Wish> wishRepository,
+        public WishViewModelService(IAsyncRepository<Wish> basketRepository,
             IAsyncRepository<CatalogItem> itemRepository,
             IUriComposer uriComposer)
         {
-            _wishRepository = wishRepository;
+            _basketRepository = basketRepository;
             _uriComposer = uriComposer;
             _itemRepository = itemRepository;
         }
 
         public async Task<WishViewModel> GetOrCreateWishForUser(string userName)
         {
-            var wishSpec = new WishWithItemsSpecification(userName);
-            var wish = (await _wishRepository.ListAsync(wishSpec)).FirstOrDefault();
+            var basketSpec = new WishWithItemsSpecification(userName);
+            var basket = (await _basketRepository.ListAsync(basketSpec)).FirstOrDefault();
 
-            if (wish == null)
+            if (basket == null)
             {
                 return await CreateWishForUser(userName);
             }
-            return await CreateViewModelFromWish(wish);
+            return await CreateViewModelFromWish(basket);
         }
 
-        private async Task<WishViewModel> CreateViewModelFromWish(Wish wish)
+        private async Task<WishViewModel> CreateViewModelFromWish(Wish basket)
         {
             var viewModel = new WishViewModel();
-            viewModel.Id = wish.Id;
-            viewModel.BuyerId = wish.BuyerId;
-            viewModel.Items = await GetWishItems(wish.Items); ;
+            viewModel.Id = basket.Id;
+            viewModel.BuyerId = basket.BuyerId;
+            viewModel.Items = await GetWishItems(basket.Items); ;
             return viewModel;
         }
 
         private async Task<WishViewModel> CreateWishForUser(string userId)
         {
-            var wish = new Wish() { BuyerId = userId };
-            await _wishRepository.AddAsync(wish);
+            var basket = new Wish() { BuyerId = userId };
+            await _basketRepository.AddAsync(basket);
 
             return new WishViewModel()
             {
-                BuyerId = wish.BuyerId,
-                Id = wish.Id,
+                BuyerId = basket.BuyerId,
+                Id = basket.Id,
                 Items = new List<WishItemViewModel>()
             };
         }
 
-        private async Task<List<WishItemViewModel>> GetWishItems(IReadOnlyCollection<WishItem> wishItems)
+        private async Task<List<WishItemViewModel>> GetWishItems(IReadOnlyCollection<WishItem> basketItems)
         {
             var items = new List<WishItemViewModel>();
-            foreach (var item in wishItems)
+            foreach (var item in basketItems)
             {
                 var itemModel = new WishItemViewModel
                 {
                     Id = item.Id,
                     UnitPrice = item.UnitPrice,
-                    Quantity = item.Quantity,
                     CatalogItemId = item.CatalogItemId
                 };
                 var catalogItem = await _itemRepository.GetByIdAsync(item.CatalogItemId);
@@ -79,5 +78,7 @@ namespace Microsoft.eShopWeb.Web.Services
 
             return items;
         }
+
+      
     }
 }

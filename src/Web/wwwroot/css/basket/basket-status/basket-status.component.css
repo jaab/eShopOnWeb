@@ -7,6 +7,10 @@
   .esh-basketstatus.is-disabled {
     opacity: .5;
     pointer-events: none; }
+    .esh-wishtatus-image {
+      height: 36px;
+      margin-top: .5rem;
+      margin-right: .5rem; }
   .esh-basketstatus-image {
     height: 36px;
     margin-top: .5rem; }

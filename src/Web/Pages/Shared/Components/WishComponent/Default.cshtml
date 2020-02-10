@@ -1,0 +1,13 @@
+﻿@model WishComponentViewModel
+@{
+    ViewData["Title"] = "My Wish";
+}
+<a class="esh-wishstatus "
+   asp-page="/Wish/Index">
+    <div class="esh-wishstatus-image">
+        <img src="~/images/cart.png" />
+    </div>
+    <div class="esh-wishstatus-badge">
+        @Model.ItemsCount
+    </div>
+</a>

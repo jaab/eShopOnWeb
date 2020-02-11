@@ -14,18 +14,18 @@ namespace Microsoft.eShopWeb.Web.Pages.Wish
 {
     public class IndexModel : PageModel
     {
-        private readonly IWishService _basketService;
+        private readonly IWishService _wishService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private string _username = null;
-        private readonly IWishViewModelService _basketViewModelService;
+        private readonly IWishViewModelService _wishViewModelService;
 
-        public IndexModel(IWishService basketService,
-            IWishViewModelService basketViewModelService,
+        public IndexModel(IWishService wishService,
+            IWishViewModelService wishViewModelService,
             SignInManager<ApplicationUser> signInManager)
         {
-            _basketService = basketService;
+            _wishService = wishService;
             _signInManager = signInManager;
-            _basketViewModelService = basketViewModelService;
+            _wishViewModelService = wishViewModelService;
         }
 
         public WishViewModel WishModel { get; set; } = new WishViewModel();
@@ -43,7 +43,7 @@ namespace Microsoft.eShopWeb.Web.Pages.Wish
             }
             await SetWishModelAsync();
 
-            await _basketService.AddItemToWish(WishModel.Id, productDetails.Id, productDetails.Price);
+            await _wishService.AddItemToWish(WishModel.Id, productDetails.Id, productDetails.Price);
 
             await SetWishModelAsync();
 
@@ -62,12 +62,12 @@ namespace Microsoft.eShopWeb.Web.Pages.Wish
         {
             if (_signInManager.IsSignedIn(HttpContext.User))
             {
-                WishModel = await _basketViewModelService.GetOrCreateWishForUser(User.Identity.Name);
+                WishModel = await _wishViewModelService.GetOrCreateWishForUser(User.Identity.Name);
             }
             else
             {
                 GetOrSetWishCookieAndUserName();
-                WishModel = await _basketViewModelService.GetOrCreateWishForUser(_username);
+                WishModel = await _wishViewModelService.GetOrCreateWishForUser(_username);
             }
         }
 

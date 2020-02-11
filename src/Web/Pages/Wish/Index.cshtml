@@ -34,20 +34,20 @@
                             <section class="esh-basket-item esh-basket-item--middle col-xs-3">@item.ProductName</section>
                             <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ @item.UnitPrice.ToString("N2")</section>
                             <section class="esh-basket-item esh-basket-item--middle col-xs-2">
-                                <input type="hidden" name="@("Items[" + i + "].Key")" value="@item.Id" />
-                               
-
-                            <input type="hidden" asp-for="@item.Id" name="id" />
-                            <input type="hidden" asp-for="@item.ProductName" name="name" />
-                            @*<input type="hidden" asp-for="@Model.WishModel.PictureUri" name="pictureUri" />*@
-                            <input type="hidden" asp-for="@item.UnitPrice" name="price" />
+                                
                             </section>
  
-                          <section class="esh-basket-item col-xs-2">
+                            <section class="esh-basket-item col-xs-2">
                             <form asp-page="/Basket/Index" method="post">
     
                             <input class="esh-wish-button" type="submit" value="[ ADD TO BASKET ]" />
-                          
+                          <input type="hidden" name="@("Items[" + i + "].Key")" value="@item.Id" />
+                               
+
+                            <input type="hidden" asp-for="@item.CatalogItemId" name="id" />
+                            <input type="hidden" asp-for="@item.ProductName" name="name" />
+                            <input type="hidden" asp-for="@item.PictureUrl" name="pictureUrl" />
+                            <input type="hidden" asp-for="@item.UnitPrice" name="price" />
                        
                             </form>
                         </section>

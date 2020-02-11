@@ -41,7 +41,6 @@ namespace Microsoft.eShopWeb.Web.Pages.Wish
         {
             await SetWishModelAsync();
 
-            await _wishService.SetQuantities(WishModel.Id, items);
 
             await _orderService.CreateOrderAsync(WishModel.Id, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
 
@@ -65,16 +64,16 @@ namespace Microsoft.eShopWeb.Web.Pages.Wish
 
         private void GetOrSetWishCookieAndUserName()
         {
-            if (Request.Cookies.ContainsKey(Constants.Wish_COOKIENAME))
+            if (Request.Cookies.ContainsKey(Constants.WISH_COOKIENAME))
             {
-                _username = Request.Cookies[Constants.Wish_COOKIENAME];
+                _username = Request.Cookies[Constants.WISH_COOKIENAME];
             }
             if (_username != null) return;
 
             _username = Guid.NewGuid().ToString();
             var cookieOptions = new CookieOptions();
             cookieOptions.Expires = DateTime.Today.AddYears(10);
-            Response.Cookies.Append(Constants.Wish_COOKIENAME, _username, cookieOptions);
+            Response.Cookies.Append(Constants.WISH_COOKIENAME, _username, cookieOptions);
         }
     }
 }

@@ -35,9 +35,9 @@
                             <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ @item.UnitPrice.ToString("N2")</section>
                             <section class="esh-basket-item esh-basket-item--middle col-xs-2">
                                 <input type="hidden" name="@("Items[" + i + "].Key")" value="@item.Id" />
-                                <input type="number" class="esh-basket-input" min="0" name="@("Items[" + i + "].Value")" value="@item.Quantity" />
+                           
                             </section>
-                            <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-xs-2">$ @Math.Round(item.Quantity * item.UnitPrice, 2).ToString("N2")</section>
+                           
                         </div>
                         <div class="row">
                             
@@ -88,7 +88,7 @@
     else
     {
         <h3 class="esh-catalog-items row">
-            basket List is empty.
+            Wish List is empty.
         </h3>
         
         <section class="esh-basket-item">

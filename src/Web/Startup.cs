@@ -149,8 +149,8 @@ namespace Microsoft.eShopWeb.Web {
             services.AddAuthentication()
             .AddFacebook(options =>
             {
-                options.AppId = "183476352866825";
-                options.AppSecret = "471535fb6e0542b83029d5b24ae3b3c5";
+                options.AppId = "xxxx";
+                options.AppSecret = "xxxx";
             });
 
            

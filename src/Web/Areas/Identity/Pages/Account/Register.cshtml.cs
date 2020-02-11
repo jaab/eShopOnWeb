@@ -19,13 +19,13 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly Microsoft.eShopWeb.ApplicationCore.Interfaces.IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            Microsoft.eShopWeb.ApplicationCore.Interfaces.IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Mime;
 
 using Ardalis.ListStartupServices;
-
+using Microsoft.eShopWeb.ApplicationCore;
 using Infrastructure.Services;
 using Infrastructure.Services.CurrencyService;
 
@@ -142,12 +142,27 @@ namespace Microsoft.eShopWeb.Web {
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
             services.AddCatalogServices(Configuration);
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+            
+            services.Configure<EmailConfig>(Configuration.GetSection("EmailSender"));
             services.AddTransient<IEmailSender, EmailSender>();
+            
+            //services.AddScoped<IEmailSender, EmailSender>();
+          /* services.AddTransient<IEmailSender, EmailSender>(i => 
+                new EmailSender(
+                    Configuration["EmailSender:Host"],
+                    Configuration.GetValue<int>("EmailSender:Port"),
+                    Configuration.GetValue<bool>("EmailSender:EnableSSL"),
+                    Configuration["EmailSender:UserName"],
+                    Configuration["EmailSender:Password"]
+                )
+            );
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);*/
 
             //services.AddIdentity<ApplicationUser, IdentityRole>()
             //.AddEntityFrameworkStores<AppIdentityDbContext>();
             // If you want to tweak Identity cookies, they're no longer part of IdentityOptions.
-            services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
+            //services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
             services.AddAuthentication()
             .AddFacebook(options =>
             {

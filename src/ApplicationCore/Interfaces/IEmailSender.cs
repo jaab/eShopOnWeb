@@ -5,6 +5,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
 
     public interface IEmailSender
     {
+        //todo
         Task SendEmailAsync(string email, string subject, string message);
     }
 }

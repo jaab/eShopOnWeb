@@ -22,7 +22,6 @@ using Microsoft.eShopWeb.ApplicationCore.Services;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Infrastructure.Logging;
-using Microsoft.eShopWeb.Infrastructure.Services;
 using Microsoft.eShopWeb.Web.Interfaces;
 using Microsoft.eShopWeb.Web.Services;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +35,7 @@ using Newtonsoft.Json;
 using Web.Extensions;
 using Web.Extensions.Middleware;
 using Microsoft.Extensions.Logging;
+using Microsoft.eShopWeb.Infrastructure.Services;
 
 [assembly : ApiConventionType(typeof(DefaultApiConventions))]
 namespace Microsoft.eShopWeb.Web {
@@ -166,8 +166,8 @@ namespace Microsoft.eShopWeb.Web {
             services.AddAuthentication()
             .AddFacebook(options =>
             {
-                options.AppId = "183476352866825";
-                options.AppSecret = "471535fb6e0542b83029d5b24ae3b3c5";
+                options.AppId = "xxxx";
+                options.AppSecret = "xxxx";
             });
 
            

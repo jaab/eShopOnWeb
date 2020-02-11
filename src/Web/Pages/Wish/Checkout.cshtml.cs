@@ -2,60 +2,51 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.Interfaces;
-using Microsoft.eShopWeb.Web.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Pages.Wish
 {
-    public class IndexModel : PageModel
+    public class CheckoutModel : PageModel
     {
         private readonly IWishService _wishService;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IOrderService _orderService;
         private string _username = null;
         private readonly IWishViewModelService _wishViewModelService;
 
-        public IndexModel(IWishService wishService,
+        public CheckoutModel(IWishService wishService,
             IWishViewModelService wishViewModelService,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IOrderService orderService)
         {
             _wishService = wishService;
             _signInManager = signInManager;
+            _orderService = orderService;
             _wishViewModelService = wishViewModelService;
         }
 
         public WishViewModel WishModel { get; set; } = new WishViewModel();
 
-        public async Task OnGet()
+        public void OnGet()
         {
-            await SetWishModelAsync();
         }
 
-        public async Task<IActionResult> OnPost(CatalogItemViewModel productDetails)
+        public async Task<IActionResult> OnPost(Dictionary<string, int> items)
         {
-            if (productDetails?.Id == null)
-            {
-                return RedirectToPage("/Index");
-            }
             await SetWishModelAsync();
 
-            await _wishService.AddItemToWish(WishModel.Id, productDetails.Id, productDetails.Price);
 
-            await SetWishModelAsync();
+            await _orderService.CreateOrderAsync(WishModel.Id, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
+
+            await _wishService.DeleteWishAsync(WishModel.Id);
 
             return RedirectToPage();
-        }
-
-        public async Task OnPostUpdate(Dictionary<string, int> items)
-        {
-            await SetWishModelAsync();
-           // await _basketService.SetQuantities(BasketModel.Id, items);
-
-            await SetWishModelAsync();
         }
 
         private async Task SetWishModelAsync()
@@ -80,7 +71,7 @@ namespace Microsoft.eShopWeb.Web.Pages.Wish
             if (_username != null) return;
 
             _username = Guid.NewGuid().ToString();
-            var cookieOptions = new CookieOptions { IsEssential = true };
+            var cookieOptions = new CookieOptions();
             cookieOptions.Expires = DateTime.Today.AddYears(10);
             Response.Cookies.Append(Constants.WISH_COOKIENAME, _username, cookieOptions);
         }

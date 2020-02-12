@@ -143,6 +143,8 @@ namespace Microsoft.eShopWeb.Web {
             services.AddCatalogServices(Configuration);
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             
+            services.AddMvc();
+            services.AddOptions();
             services.Configure<EmailConfig>(Configuration.GetSection("EmailSender"));
             services.AddTransient<IEmailSender, EmailSender>();
             
@@ -166,8 +168,8 @@ namespace Microsoft.eShopWeb.Web {
             services.AddAuthentication()
             .AddFacebook(options =>
             {
-                options.AppId = "xxxx";
-                options.AppSecret = "xxxx";
+                options.AppId = "183476352866825";
+                options.AppSecret = "471535fb6e0542b83029d5b24ae3b3c5";
             });
 
            

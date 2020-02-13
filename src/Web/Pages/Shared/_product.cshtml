@@ -1,5 +1,15 @@
 ﻿@model CatalogItemViewModel
 
+
+
+
+<form asp-page="/Shared/Pdf/Pdf" method="post">
+        <div>
+        <input type="submit" value="Gerar pdf" style="width:150px;height:27px" />
+        </div>
+    </form>
+
+
 <form asp-page="/Wish/Index" method="post">
 <input class="esh-catalog-button" type="submit" value="[ ADD TO WISH ]" />
 <input type="hidden" asp-for="@Model.Id" name="id" />
@@ -7,7 +17,7 @@
     <input type="hidden" asp-for="@Model.PictureUri" name="pictureUri" />
     <input type="hidden" asp-for="@Model.Price" name="price" />
     </form>
-    
+
 <form asp-page="/Basket/Index" method="post">
     <img class="esh-catalog-thumbnail" src="@Model.PictureUri" />
     <input class="esh-catalog-button" type="submit" value="[ ADD TO BASKET ]" />

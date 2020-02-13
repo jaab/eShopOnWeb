@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
+using System.Globalization;
 
 using Ardalis.ListStartupServices;
 using Microsoft.eShopWeb.ApplicationCore;
@@ -36,6 +37,8 @@ using Web.Extensions;
 using Web.Extensions.Middleware;
 using Microsoft.Extensions.Logging;
 using Microsoft.eShopWeb.Infrastructure.Services;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Localization;
 
 [assembly : ApiConventionType(typeof(DefaultApiConventions))]
 namespace Microsoft.eShopWeb.Web {
@@ -148,29 +151,36 @@ namespace Microsoft.eShopWeb.Web {
             services.Configure<EmailConfig>(Configuration.GetSection("EmailSender"));
             services.AddTransient<IEmailSender, EmailSender>();
             
-            //services.AddScoped<IEmailSender, EmailSender>();
-          /* services.AddTransient<IEmailSender, EmailSender>(i => 
-                new EmailSender(
-                    Configuration["EmailSender:Host"],
-                    Configuration.GetValue<int>("EmailSender:Port"),
-                    Configuration.GetValue<bool>("EmailSender:EnableSSL"),
-                    Configuration["EmailSender:UserName"],
-                    Configuration["EmailSender:Password"]
-                )
-            );
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);*/
-
-            //services.AddIdentity<ApplicationUser, IdentityRole>()
-            //.AddEntityFrameworkStores<AppIdentityDbContext>();
-            // If you want to tweak Identity cookies, they're no longer part of IdentityOptions.
-            //services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
-            services.AddAuthentication()
+            
+           services.AddAuthentication()
             .AddFacebook(options =>
             {
                 options.AppId = "183476352866825";
                 options.AppSecret = "471535fb6e0542b83029d5b24ae3b3c5";
+
             });
+
+            #region snippet1
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+            #endregion
+             services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new List<CultureInfo>
+                    {
+                        new CultureInfo("en-US"),
+                        new CultureInfo("fr")
+                    };
+
+                options.DefaultRequestCulture = new RequestCulture("en-US");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+        
+            
 
            
 
@@ -236,8 +246,23 @@ namespace Microsoft.eShopWeb.Web {
                 app.UseHsts();
             }
 
+            #region snippet2
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("fr"),
+            };
+            #endregion
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"),
+                // Formatting numbers, dates, etc.
+                SupportedCultures = supportedCultures,
+                // UI strings that we have localized.
+                SupportedUICultures = supportedCultures
+            });
             app.UseStaticFiles();
-
+            app.UseRequestLocalization();
             app.UseRouting();
 
             app.UseHttpsRedirection();

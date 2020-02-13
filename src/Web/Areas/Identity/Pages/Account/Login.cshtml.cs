@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.Extensions.Logging;
 
+
+
 namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]

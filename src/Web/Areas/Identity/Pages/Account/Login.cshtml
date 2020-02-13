@@ -1,6 +1,7 @@
 ﻿@page
 @model LoginModel
 
+
 @{
     ViewData["Title"] = "Log in";
 }
@@ -55,9 +56,22 @@
                 </form>
             </section>
         </div>
-         <div class="col-md-5">
-      @*<partial name="~/Views/Manage/ExternalLogins.cshtml" />*@  
-      @* @await Html.PartialAsync("~/Views/Manage/ExternalLogins.cshtml")*@ 
+        <div class="col-md-5">
+        @if (Model.ExternalLogins?.Count > 0)
+       {
+       <h2>External Login.</h2>
+       <hr />
+       <form asp-action="LinkLogin" method="post" class="form-horizontal">
+        <div id="socialLoginList">
+            <p>
+                @foreach (var provider in Model.ExternalLogins)
+                {
+                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                }
+            </p>
+        </div>
+        </form>
+        }
          </div>
     </div>
 </div>

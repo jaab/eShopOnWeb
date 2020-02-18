@@ -6,9 +6,14 @@ using Microsoft.eShopWeb.Web.Services;
 using Microsoft.eShopWeb.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.eShopWeb.Web.Extensions;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Microsoft.eShopWeb.Web.Pages {
     public class IndexModel : PageModel {
+
+        [TempData]
+        public string StatusMessage { get; set; }
         private readonly ICatalogViewModelService _catalogViewModelService;
 
         public IndexModel(ICatalogViewModelService catalogViewModelService) {

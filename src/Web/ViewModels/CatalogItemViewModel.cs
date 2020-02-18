@@ -11,5 +11,7 @@ namespace Microsoft.eShopWeb.Web.ViewModels
         public bool ShowPrice { get; set; }
         public Currency PriceUnit {get; set;}
 
+        public int QtStock { get; set; }
+
     }
 }

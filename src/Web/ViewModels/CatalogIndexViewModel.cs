@@ -14,5 +14,7 @@ namespace Microsoft.eShopWeb.Web.ViewModels
         public ResultView ResultView { get; set; } = ResultView.Grid;
         public string SearchText {get; set;}
         public PaginationInfoViewModel PaginationInfo { get; set; }
+
+        public string StatusMessage { get; set; }
     }
 }

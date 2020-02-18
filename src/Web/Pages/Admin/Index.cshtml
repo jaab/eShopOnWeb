@@ -19,6 +19,7 @@
             </label>
             <input type="text" asp-for="@Model.CatalogModel.SearchText" />
             <input class="esh-catalog-send" type="image" src="images/arrow-right.svg" />
+            <a class="esh-catalog-send" asp-page="/Admin/AddCatalogItem"> [ Add Item ] </a>
         </form>
     </div>
 </section>
@@ -32,6 +33,7 @@
             {
                 <div class="esh-catalog-item col-md-4">
                     <partial name="_editCatalog" for="@catalogItem" />
+                    <partial name="_removeCatalog" for="@catalogItem" />
                 </div>
             }
         </div>

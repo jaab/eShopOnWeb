@@ -17,6 +17,8 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
+        [TempData]
+        public string StatusMessage { get; set; }
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
@@ -85,6 +87,7 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    StatusMessage="Verification email sent. Please check your email.";
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

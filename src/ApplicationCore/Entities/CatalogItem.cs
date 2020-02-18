@@ -14,6 +14,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities
 
         [DefaultValue(true)]
         public bool ShowPrice { get; set; } = true;
+        public int QtStock { get; set; }
         
 
         #region "Navigation properties"

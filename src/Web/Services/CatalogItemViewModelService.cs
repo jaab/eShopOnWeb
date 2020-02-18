@@ -29,7 +29,8 @@ namespace Microsoft.eShopWeb.Web.Services
 
             await _catalogItemRepository.UpdateAsync(updatedCatalogItem);
         }
-
+         
+         //ADD CatalogItem
         public async Task AddCatalogItem(CatalogItemAddModel viewModel)
         {
             var newCatalogItem = new CatalogItem
@@ -43,7 +44,8 @@ namespace Microsoft.eShopWeb.Web.Services
             newCatalogItem = await _catalogItemRepository.AddAsync(newCatalogItem);
 
         }
-
+        
+        //REMOVE CatalogItem
          public async Task RemoveCatalogItem(CatalogItemViewModel viewModel)
         {
             var existingCatalogItem = await _catalogItemRepository.GetByIdAsync(viewModel.Id);

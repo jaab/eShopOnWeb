@@ -13,7 +13,10 @@ using System.Threading.Tasks;
 namespace Microsoft.eShopWeb.Web.Pages.Wish
 {
     public class IndexModel : PageModel
-    {
+    {   
+        [TempData]
+        public string StatusMessage { get; set; }
+
         private readonly IWishService _wishService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private string _username = null;
@@ -46,8 +49,9 @@ namespace Microsoft.eShopWeb.Web.Pages.Wish
             await _wishService.AddItemToWish(WishModel.Id, productDetails.Id, productDetails.Price);
 
             await SetWishModelAsync();
-
-            return RedirectToPage();
+            
+            StatusMessage="Product was successfull added to your Wish List. Continue buying the hapiness.";
+            return RedirectToPage("/Index");
         }
 
         public async Task OnPostUpdate(Dictionary<string, int> items)

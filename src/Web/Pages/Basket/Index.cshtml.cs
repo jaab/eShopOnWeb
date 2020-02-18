@@ -14,6 +14,8 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
 {
     public class IndexModel : PageModel
     {
+        [TempData]
+        public string StatusMessage { get; set; }
         private readonly IBasketService _basketService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private string _username = null;
@@ -47,7 +49,10 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
 
             await SetBasketModelAsync();
 
-            return RedirectToPage();
+            StatusMessage="Product was successfull added to your Basket. Continue buying the hapiness.";
+            return RedirectToPage("/Index");
+
+           
         }
 
         public async Task OnPostUpdate(Dictionary<string, int> items)

@@ -11,6 +11,8 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LogoutModel : PageModel
     {
+        [TempData]
+        public string StatusMessage { get; set; }
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
 
@@ -34,7 +36,9 @@ namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
             }
             else
             {
-                return RedirectToPage("/Index");
+                StatusMessage="Obrigado pela visita. Volte em breve.";
+
+            return RedirectToPage("/Index");
             }
         }
     }

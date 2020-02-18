@@ -14,6 +14,8 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
 {
     public class CheckoutModel : PageModel
     {
+        [TempData]
+        public string StatusMessage { get; set; }
         private readonly IBasketService _basketService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IOrderService _orderService;
@@ -47,7 +49,9 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
 
             await _basketService.DeleteBasketAsync(BasketModel.Id);
 
-            return RedirectToPage();
+             StatusMessage="Thanks for your Order! Continue Shopping.";
+
+            return RedirectToPage("/Index");
         }
 
         private async Task SetBasketModelAsync()

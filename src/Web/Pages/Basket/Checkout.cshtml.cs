@@ -8,6 +8,7 @@ using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Pages.Basket
@@ -19,25 +20,25 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
         private readonly IBasketService _basketService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IOrderService _orderService;
+        private readonly IEmailSender _emailSender;
         private string _username = null;
         private readonly IBasketViewModelService _basketViewModelService;
 
         public CheckoutModel(IBasketService basketService,
             IBasketViewModelService basketViewModelService,
             SignInManager<ApplicationUser> signInManager,
-            IOrderService orderService)
+            IOrderService orderService,IEmailSender emailSender)
         {
             _basketService = basketService;
             _signInManager = signInManager;
             _orderService = orderService;
             _basketViewModelService = basketViewModelService;
+            _emailSender = emailSender;
         }
 
         public BasketViewModel BasketModel { get; set; } = new BasketViewModel();
 
-        public void OnGet()
-        {
-        }
+       
 
         public async Task<IActionResult> OnPost(Dictionary<string, int> items)
         {
@@ -46,6 +47,8 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
             await _basketService.SetQuantities(BasketModel.Id, items);
 
             await _orderService.CreateOrderAsync(BasketModel.Id, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
+             await _emailSender.SendEmailAsync(User.Identity.Name, "Order done",
+                        $"Brevemente recebera a sua order");
 
             await _basketService.DeleteBasketAsync(BasketModel.Id);
 

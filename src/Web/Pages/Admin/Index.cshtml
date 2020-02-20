@@ -19,7 +19,10 @@
             </label>
             <input type="text" asp-for="@Model.CatalogModel.SearchText" />
             <input class="esh-catalog-send" type="image" src="images/arrow-right.svg" />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a class="esh-catalog-send" asp-page="/Admin/AddCatalogItem"> [ Add Item ] </a>
+            &nbsp;&nbsp;&nbsp;
+            <a class="esh-catalog-send" asp-controller="Order" asp-action="AllOrders"> [ Manage orders]  </a>
         </form>
     </div>
 </section>

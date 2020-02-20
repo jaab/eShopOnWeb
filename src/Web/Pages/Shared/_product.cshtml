@@ -1,15 +1,6 @@
 ﻿@model CatalogItemViewModel
 
 
-
-
-<form asp-page="/Shared/Pdf/Pdf" method="post">
-        <div>
-        <input type="submit" value="Gerar pdf" style="width:150px;height:27px" />
-        </div>
-    </form>
-
-
 <form asp-page="/Wish/Index" method="post">
 <input class="esh-catalog-button" type="submit" value="[ ADD TO WISH ]" />
 <input type="hidden" asp-for="@Model.Id" name="id" />

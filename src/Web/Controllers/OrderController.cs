@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.Web.Features.MyOrders;
 using Microsoft.eShopWeb.Web.Features.OrderDetails;
+using Microsoft.eShopWeb.Web.Pages.Admin.AllOrders;
+using Microsoft.eShopWeb.Web.Pages.Admin.AllOrderDetails;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Controllers
@@ -27,10 +29,31 @@ namespace Microsoft.eShopWeb.Web.Controllers
             return View(viewModel);
         }
 
+        [HttpGet()]
+        public async Task<IActionResult> AllOrders()
+        {
+            var viewModel = await _mediator.Send(new GetAllOrders());
+
+            return View(viewModel);
+        }
+
         [HttpGet("{orderId}")]
         public async Task<IActionResult> Detail(int orderId)
         {
             var viewModel = await _mediator.Send(new GetOrderDetails(User.Identity.Name, orderId));
+
+            if (viewModel == null)
+            {
+                return BadRequest("No such order found for this user.");
+            }
+
+            return View(viewModel);
+        }
+
+         [HttpGet("{orderId}")]
+        public async Task<IActionResult> DetailAll(int orderId)
+        {
+            var viewModel = await _mediator.Send(new GetAllOrderDetails(orderId));
 
             if (viewModel == null)
             {

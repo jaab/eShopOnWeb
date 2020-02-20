@@ -12,8 +12,8 @@ namespace Microsoft.eShopWeb.Web.Pages.Shared.Pdf
     public class PdfModel : PageModel
     {
 
-        public IActionResult OnPost(int id)
-        {
+        public IActionResult  OnPost(int id)
+       {
 
            IronPdf.HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
            Renderer.RenderUrlAsPdf("https://localhost:5001").SaveAs("Catalogo.pdf");

@@ -10,6 +10,8 @@
 </section>
 <section class="esh-catalog-filters">
     <div class="container">
+        <div class="row">
+         <div class="col">
         <form method="get">
             <label class="esh-catalog-label" data-title="View Type">
                 <select asp-for="@Model.CatalogModel.ResultView"
@@ -29,6 +31,14 @@
                 value="@Model.CatalogModel.SearchText" />
             <input class="esh-catalog-send" type="image" src="images/arrow-right.svg" />
         </form>
+        </div>
+        <div class="col">
+       <form asp-page="/Shared/Pdf/Pdf" method="post">
+        <input class="esh-catalog-send" type="submit" value="Gerar Catalogo" />
+       </form>
+       @*<a class="esh-catalog-send" asp-page="/Shared/Pdf/Pdf"> [Gerar Catalogo] </a>*@ 
+       </div>
+       </div>
     </div>
 </section>
 <div class="container">

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Localization;
 
 namespace Microsoft.eShopWeb.Web.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("[controller]/[action]")]
     public class HomeController : Controller
     {

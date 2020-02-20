@@ -52,7 +52,7 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
 
             await _basketService.DeleteBasketAsync(BasketModel.Id);
 
-             StatusMessage="Thanks for your Order! Continue Shopping.";
+             StatusMessage="Thanks for your Order, Verify your Email! Continue Shopping.";
 
             return RedirectToPage("/Index");
         }
